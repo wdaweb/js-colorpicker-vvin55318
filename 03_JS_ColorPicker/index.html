@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <title>Document</title>
+    <style>
+        body{
+            background:#eee;
+        }
+
+        .w-98{
+            width:98%;
+        }
+
+        .h-98{
+            height:98%;
+        }
+
+        .f-s-4{
+            font-size:4rem;
+        }
+
+        .btn-R{
+            width:40px;
+            height:40px;
+            background:red;
+            border:5px solid #fff ;
+            border-radius:50%;
+        }
+
+        .btn-R:hover{
+            border:5px solid rgb(255, 203, 135) ;
+        }
+
+        .btn-G{
+            width:40px;
+            height:40px;
+            background:green;
+            border:5px solid #fff ;
+            border-radius:50%;
+        }
+
+        .btn-G:hover{
+            border:5px solid rgb(193, 255, 135) ;
+        }
+
+        .btn-B{
+            width:40px;
+            height:40px;
+            background:blue;
+            border:5px solid #fff ;
+            border-radius:50%;
+        }
+
+        .btn-B:hover{
+            border:5px solid rgb(135, 201, 255) ;
+        }
+
+        .btn-W{
+            width:40px;
+            height:40px;
+            background:rgb(121, 121, 121);
+            border:5px solid #fff ;
+            border-radius:50%;
+            font-weight:bold;
+        }
+
+        .btn-W:hover{
+            border:5px solid rgb(189, 189, 189) ;
+        }
+    </style>
+</head>
+
+<body class="vw-100 vh-100 d-flex justify-content-center align-items-center flex-column">
+    <div class="d-flex justify-content-center align-items-center mb-5" style="width:500px">
+        <div class="w-98 h-98 d-flex justify-content-center align-items-center f-s-4" style="background:#ddd;height:80vh;" id="bgClr">
+            <h1 id="nmb" style="text-transform:uppercase"></h1>
+        </div>
+    </div>
+    <form>
+        <div class="mb-1">
+            <input type="button"  onclick="chgClr('R')" class="mr-1 btn-R">
+            <input type="range" class="ran_R " min="0" max="255" step="1" value="128" oninput="drag('R')" onchange="drag('R')">
+        </div>
+        <div class="mb-1">
+            <input type="button"  onclick="chgClr('G')" class="mr-1 btn-G">
+            <input type="range" class="ran_G" min="0" max="255" step="1" value="128" oninput="drag('G')" onchange="drag('G')">
+        </div>
+        <div class="mb-1">
+            <input type="button"  onclick="chgClr('B')" class="mr-1 btn-B">
+            <input type="range" class="ran_B" min="0" max="255" step="1" value="128" oninput="drag('B')" onchange="drag('B')">
+        </div>
+            <input type="button" class="mr-1 btn-W" value="?" onclick="chgClr('?')">
+    </form>
+
+    <script>
+        var zone_bg=document.getElementById('bgClr');
+        var zone_ran=document.getElementById('nmb');
+
+//進網頁時，隨機給予一組顏色
+        var red=Math.floor(Math.random()*255);
+        var green=Math.floor(Math.random()*255);
+        var blue=Math.floor(Math.random()*255);
+        zone_bg.style="background:rgb("+red+","+green+","+blue+");";
+        zone_ran.textContent="rgb("+red+","+green+","+blue+");";
+        string16(red,green,blue);
+        updran(red,green,blue);
+        
+// 將數字轉成16進位制，且將字串轉為數字
+        function string16(one,two,three){
+            one=Number(one);
+            two=Number(two);
+            three=Number(three);
+            x=one.toString(16);
+            x=(x.length<2)?'0'+x : x;
+            y=two.toString(16);
+            y=(y.length<2)?'0'+y : y;
+            z=three.toString(16);
+            z=(z.length<2)?'0'+z : z;
+            zone_ran.textContent="#"+x+y+z;
+        }
+
+//判別輸入的數值有沒有超過255
+        function RGBclr(nmb){
+            if (nmb>255) alert('請重新輸入，數字範圍0~255');
+            else zone_bg.style="background:rgb("+red+","+green+","+blue+")";
+            string16(red,green,blue);
+            updran(red,green,blue);
+        };       
+        
+//prompt 改變顏色
+        function chgClr(color){
+        switch (color) {
+            case 'R':
+                let red_b=red;
+                red_b=prompt('R:輸入數字範圍0~255',red_b);
+                if(red_b==null) red_b=red;
+                red=red_b;
+                RGBclr(red);
+            break;
+            case 'G':
+                let green_b=green;
+                green_b=prompt('R:輸入數字範圍0~255',green_b);
+                if(green_b==null) green_b=green;
+                green=green_b;
+                RGBclr(red);
+            break; 
+            case 'B':
+                let blue_b=blue;
+                blue_b=prompt('R:輸入數字範圍0~255',blue_b);
+                if(blue_b==null) blue_b=blue;
+                blue=blue_b;
+                RGBclr(red);
+            break;
+//隨機改變顏色
+            case '?':
+                red=Math.floor(Math.random()*255);
+                green=Math.floor(Math.random()*255);
+                blue=Math.floor(Math.random()*255);
+                zone_bg.style="background:rgb("+red+","+green+","+blue+");";
+                zone_ran.textContent="rgb("+red+","+green+","+blue+");";
+                string16(red,green,blue);
+                updran(red,green,blue);
+            break;
+            }
+        }
+
+//range拖曳時變換顏色
+        function drag(who){ 
+            zone_bg.style="background:rgb("+red+","+green+","+blue+");";
+            zone_ran.textContent="rgb("+red+","+green+","+blue+");";
+            string16(red,green,blue);
+
+        //取得range的value
+            switch (who){
+                case'R':
+                    red=document.getElementsByClassName('ran_R')['0'].value;  
+                break;
+                case'G':
+                    green=document.getElementsByClassName('ran_G')['0'].value;
+                break;
+                case'B':
+                    blue=document.getElementsByClassName('ran_B')['0'].value;
+                break;
+            }
+            updran(red,green,blue);
+        }
+
+//更新range的value(每次變更顏色完做更新)
+        function updran(r,g,b){
+            document.getElementsByClassName('ran_R')['0'].value=r;
+            document.getElementsByClassName('ran_G')['0'].value=g;
+            document.getElementsByClassName('ran_B')['0'].value=b;
+        }
+    </script>
+
+    <script src="js/jquery-3.3.1.slim.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+
+</html>
